@@ -13,4 +13,5 @@ func TestResultGetter(t *testing.T) {
 
 	assert.Equal(t, result.Id(), "abc")
 	assert.Equal(t, result.FullName(), "bob c lamptest")
+	assert.Equal(t, result.CellPhoneNumber(), "123")
 }
