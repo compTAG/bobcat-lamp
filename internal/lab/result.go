@@ -8,12 +8,14 @@ type Result struct {
 }
 
 func MakeResult(id, name, number string, result bool) Result {
-	return Result{}
+	return Result{id, "", "", true}
 
 }
 
-// func (r Result) Id() string {
-// }
+func (r Result) Id() string {
+	return r.id
+}
+
 //
 // func (r Result) FullName() string {
 // }
