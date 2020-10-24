@@ -1,1 +1,1 @@
-# bobcat-lamp
+# Bobcat Lamp
