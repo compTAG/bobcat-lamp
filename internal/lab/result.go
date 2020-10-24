@@ -8,7 +8,7 @@ type Result struct {
 }
 
 func MakeResult(id, name, number string, result bool) Result {
-	return Result{id, "", "", true}
+	return Result{id, name, "", true}
 
 }
 
@@ -16,9 +16,10 @@ func (r Result) Id() string {
 	return r.id
 }
 
-//
-// func (r Result) FullName() string {
-// }
+func (r Result) FullName() string {
+	return r.name
+}
+
 //
 // func (r Result) CellPhoneNumber() string {
 // }

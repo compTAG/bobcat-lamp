@@ -9,7 +9,8 @@ import (
 )
 
 func TestResultGetter(t *testing.T) {
-	result := lab.MakeResult("abc", "bob", "123", false)
+	result := lab.MakeResult("abc", "bob c lamptest", "123", false)
 
 	assert.Equal(t, result.Id(), "abc")
+	assert.Equal(t, result.FullName(), "bob c lamptest")
 }
