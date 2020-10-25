@@ -3,9 +3,9 @@ package msg_test
 import (
 	"testing"
 
-	"github.com/bmizerany/assert"
 	"github.com/comptag/bobcat-lamp/internal/msg"
 	"github.com/comptag/bobcat-lamp/internal/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMessageGetter(t *testing.T) {
