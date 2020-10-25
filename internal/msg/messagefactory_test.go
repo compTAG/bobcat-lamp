@@ -10,8 +10,6 @@ import (
 )
 
 func TestMessageFactoryCreate(t *testing.T) {
-	from := types.MakePhoneNumber("1115557777")
-
 	cases := []struct {
 		name         string
 		to           types.PhoneNumber
@@ -35,10 +33,9 @@ func TestMessageFactoryCreate(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			result := lab.MakeResult("id", "Name X", tc.to, tc.result)
 
-			factory := msg.MakeMessageFactory(from)
+			factory := msg.MakeMessageFactory()
 			message := factory.Create(result)
 
-			assert.Equal(t, from, message.From())
 			assert.Equal(t, tc.to, message.To())
 			assert.Equal(t, tc.expectedBody, message.Body())
 		})

@@ -1,5 +1,7 @@
 package msg
 
+import "fmt"
+
 type Messenger interface {
 	Send(Message) (string, error)
 }
@@ -11,6 +13,7 @@ func MakeDummyMessenger() DummyMessenger {
 	return DummyMessenger{}
 }
 
-func (m *DummyMessenger) Send(message Message) (string, error) {
+func (m DummyMessenger) Send(message Message) (string, error) {
+	fmt.Println("DummyMessenger: (", message.To(), ")", message.Body())
 	return "", nil
 }
