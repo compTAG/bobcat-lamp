@@ -1,6 +1,9 @@
 package msg_test
 
 import (
+	"errors"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/comptag/bobcat-lamp/internal/msg"
@@ -13,7 +16,8 @@ func TestDummyMessenger(t *testing.T) {
 	body := "a boring message"
 	message := msg.MakeMessage(to, body)
 
-	messenger := msg.MakeDummyMessenger()
+	logger := log.New(os.Stdout, "", log.LstdFlags)
+	messenger := msg.MakeDummyMessenger(logger)
 
 	r, err := messenger.Send(message)
 	assert.Equal(t, "", r)
