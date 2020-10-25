@@ -1,6 +1,11 @@
 package msg
 
-import "github.com/comptag/bobcat-lamp/internal/types"
+import (
+	"log"
+	"os"
+
+	"github.com/comptag/bobcat-lamp/internal/types"
+)
 
 type Reporter struct {
 	messenger  Messenger
@@ -20,7 +25,8 @@ func MakeReporterWithMessenger(messenger Messenger) Reporter {
 }
 
 func MakeDummyReporter() Reporter {
-	dummyBackend := MakeDummyMessenger()
+	logger := log.New(os.Stdout, "", log.LstdFlags)
+	dummyBackend := MakeDummyMessenger(logger)
 	return MakeReporterWithMessenger(dummyBackend)
 }
 
