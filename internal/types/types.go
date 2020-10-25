@@ -1,9 +1,15 @@
 package types
 
-type PhoneNumber string
+type PhoneNumber struct {
+	string
+}
 
 func MakePhoneNumber(p string) PhoneNumber {
-	return PhoneNumber(p)
+	return PhoneNumber{p}
+}
+
+func (p PhoneNumber) InternationalNoDash() string {
+	return p.string
 }
 
 type LabResult interface {
