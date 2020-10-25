@@ -3,6 +3,7 @@ package msg
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/comptag/bobcat-lamp/internal/types"
 )
@@ -30,9 +31,15 @@ func MakeDummyReporter() Reporter {
 	return MakeReporterWithMessenger(dummyBackend)
 }
 
-func MakeSmsReporter(accountSid, authToken string, from types.PhoneNumber) Reporter {
+func MakeSmsReporter(
+	accountSid string,
+	authToken string,
+	from types.PhoneNumber,
+	pollInterval time.Duration,
+	maxTries int,
+) Reporter {
 	client := MakeTwilioClient(accountSid, authToken)
-	smsBackend := MakeSmsMessenger(client, from)
+	smsBackend := MakeSmsMessenger(client, from, pollInterval, maxTries)
 	return MakeReporterWithMessenger(smsBackend)
 }
 
