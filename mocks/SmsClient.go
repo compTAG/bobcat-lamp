@@ -14,6 +14,29 @@ type SmsClient struct {
 	mock.Mock
 }
 
+// Get provides a mock function with given fields: sid
+func (_m *SmsClient) Get(sid string) (*gotwilio.SmsResponse, error) {
+	ret := _m.Called(sid)
+
+	var r0 *gotwilio.SmsResponse
+	if rf, ok := ret.Get(0).(func(string) *gotwilio.SmsResponse); ok {
+		r0 = rf(sid)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*gotwilio.SmsResponse)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(sid)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Send provides a mock function with given fields: from, to, body
 func (_m *SmsClient) Send(from types.PhoneNumber, to types.PhoneNumber, body string) (*gotwilio.SmsResponse, error) {
 	ret := _m.Called(from, to, body)

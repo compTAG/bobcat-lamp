@@ -11,7 +11,7 @@ type SmsResponse = gotwilio.SmsResponse
 
 type SmsClient interface {
 	Send(from, to types.PhoneNumber, body string) (*SmsResponse, error)
-	// Get(sid string) (*SmsResponse, error)
+	Get(sid string) (*SmsResponse, error)
 }
 
 type TwilioClient struct {
@@ -41,5 +41,10 @@ func (c TwilioClient) Send(from, to types.PhoneNumber, body string) (*SmsRespons
 		"",
 		"",
 	)
+	return response, mergeError(excep, err)
+}
+
+func (c TwilioClient) Get(sid string) (*SmsResponse, error) {
+	response, excep, err := c.twilio.GetSMS(sid)
 	return response, mergeError(excep, err)
 }
