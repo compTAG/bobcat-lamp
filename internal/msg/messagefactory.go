@@ -2,14 +2,18 @@ package msg
 
 import "github.com/comptag/bobcat-lamp/internal/types"
 
-type MessageFactory struct {
+type MessageFactory interface {
+	Create(result types.LabResult) Message
 }
 
-func MakeMessageFactory() MessageFactory {
-	return MessageFactory{}
+type StaticMessageFactory struct {
 }
 
-func (f MessageFactory) Create(result types.LabResult) Message {
+func MakeStaticMessageFactory() StaticMessageFactory {
+	return StaticMessageFactory{}
+}
+
+func (f StaticMessageFactory) Create(result types.LabResult) Message {
 	body := f.msgForNegative()
 	if result.IsPositive() {
 		body = f.msgForPositive()
@@ -18,10 +22,10 @@ func (f MessageFactory) Create(result types.LabResult) Message {
 	return MakeMessage(result.Patient(), body)
 }
 
-func (f MessageFactory) msgForPositive() string {
+func (f StaticMessageFactory) msgForPositive() string {
 	return "You've got the rona, here is what to do"
 }
 
-func (f MessageFactory) msgForNegative() string {
+func (f StaticMessageFactory) msgForNegative() string {
 	return "Good news, your test was negative"
 }

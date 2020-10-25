@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMessageFactoryCreate(t *testing.T) {
+func TestStaticMessageFactoryCreate(t *testing.T) {
 	cases := []struct {
 		name         string
 		to           types.PhoneNumber
@@ -34,7 +34,7 @@ func TestMessageFactoryCreate(t *testing.T) {
 			patient := types.MakePatient("id", "Name X", tc.to)
 			result := lab.MakeResult(patient, tc.result)
 
-			factory := msg.MakeMessageFactory()
+			factory := msg.MakeStaticMessageFactory()
 			message := factory.Create(result)
 
 			assert.Equal(t, patient, message.To())
