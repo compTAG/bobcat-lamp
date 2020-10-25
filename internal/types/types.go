@@ -7,8 +7,6 @@ func MakePhoneNumber(p string) PhoneNumber {
 }
 
 type LabResult interface {
-	Id() string
-	FullName() string
-	CellPhoneNumber() PhoneNumber
+	Patient() Patient
 	IsPositive() bool
 }

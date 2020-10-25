@@ -11,16 +11,15 @@ import (
 
 func TestResultInterface(t *testing.T) {
 	// if result is not a lab result this code will cause compilation to fail
-	phone := types.MakePhoneNumber("123")
-	var _ types.LabResult = lab.MakeResult("", "", phone, false)
+	patient := types.Patient{}
+	var _ types.LabResult = lab.MakeResult(patient, false)
 }
 
 func TestResultGetter(t *testing.T) {
 	phone := types.MakePhoneNumber("123")
-	result := lab.MakeResult("abc", "bob c lamptest", phone, false)
+	patient := types.MakePatient("id", "bob c lamptest", phone)
+	result := lab.MakeResult(patient, false)
 
-	assert.Equal(t, "abc", result.Id())
-	assert.Equal(t, "bob c lamptest", result.FullName())
-	assert.Equal(t, phone, result.CellPhoneNumber())
+	assert.Equal(t, patient, result.Patient())
 	assert.False(t, result.IsPositive())
 }
