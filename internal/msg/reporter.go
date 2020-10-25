@@ -30,6 +30,12 @@ func MakeDummyReporter() Reporter {
 	return MakeReporterWithMessenger(dummyBackend)
 }
 
+func MakeSmsReporter(accountSid, authToken string, from types.PhoneNumber) Reporter {
+	client := MakeTwilioClient(accountSid, authToken)
+	smsBackend := MakeSmsMessenger(client, from)
+	return MakeReporterWithMessenger(smsBackend)
+}
+
 func (r *Reporter) Report(result types.LabResult) (string, error) {
 	message := r.msgFactory.Create(result)
 	return r.messenger.Send(message)
