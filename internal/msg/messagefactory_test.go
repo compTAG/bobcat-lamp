@@ -31,12 +31,13 @@ func TestMessageFactoryCreate(t *testing.T) {
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := lab.MakeResult("id", "Name X", tc.to, tc.result)
+			patient := types.MakePatient("id", "Name X", tc.to)
+			result := lab.MakeResult(patient, tc.result)
 
 			factory := msg.MakeMessageFactory()
 			message := factory.Create(result)
 
-			assert.Equal(t, tc.to, message.To())
+			assert.Equal(t, patient, message.To())
 			assert.Equal(t, tc.expectedBody, message.Body())
 		})
 	}

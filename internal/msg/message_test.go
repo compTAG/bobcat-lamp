@@ -9,7 +9,7 @@ import (
 )
 
 func TestMessageGetter(t *testing.T) {
-	to := types.PhoneNumber("457")
+	to := types.Patient{}
 	body := "hello world"
 
 	message := msg.MakeMessage(to, body)

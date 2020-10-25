@@ -15,7 +15,7 @@ func (f MessageFactory) Create(result types.LabResult) Message {
 		body = f.msgForPositive()
 	}
 
-	return MakeMessage(result.CellPhoneNumber(), body)
+	return MakeMessage(result.Patient(), body)
 }
 
 func (f MessageFactory) msgForPositive() string {

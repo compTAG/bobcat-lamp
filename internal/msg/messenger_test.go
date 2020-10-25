@@ -9,7 +9,7 @@ import (
 )
 
 func TestDummyMessenger(t *testing.T) {
-	to := types.PhoneNumber("457")
+	to := types.Patient{}
 	body := "a boring message"
 	message := msg.MakeMessage(to, body)
 
