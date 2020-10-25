@@ -14,6 +14,6 @@ func MakeDummyMessenger() DummyMessenger {
 }
 
 func (m DummyMessenger) Send(message Message) (string, error) {
-	fmt.Println("DummyMessenger: (", message.To(), ")", message.Body())
+	fmt.Println("DummyMessenger: (", message.To().FullName(), ")", message.Body())
 	return "", nil
 }
