@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"time"
 
 	"github.com/labstack/gommon/log"
@@ -13,8 +14,12 @@ import (
 
 const LiveSms = true
 
-func getFilenames() (string, string, error) {
-	return "./testdata/patients.csv", "./testdata/results.csv", nil
+func getFilenames() (string, string) {
+	patientFile := flag.String("p", "./testdata/patients.csv", "patients file name")
+	resultsFile := flag.String("r", "./testdata/results.csv", "results file name")
+	flag.Parse()
+
+	return *patientFile, *resultsFile
 
 }
 
@@ -52,11 +57,7 @@ func sendReport(reporter msg.Reporter, results []*lab.Result) ([]string, error) 
 func main() {
 	// init variables
 	reporter := initReporter(LiveSms)
-	patientsFileName, resultsFileName, err := getFilenames()
-	if err != nil {
-		log.Error(err)
-		return
-	}
+	patientsFileName, resultsFileName := getFilenames()
 
 	// load results
 	results, err := pipe.LoadFile(patientsFileName, resultsFileName)
