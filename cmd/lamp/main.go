@@ -5,20 +5,16 @@ import (
 	"time"
 
 	"github.com/comptag/bobcat-lamp/internal/env"
-	"github.com/comptag/bobcat-lamp/internal/lab"
 	"github.com/comptag/bobcat-lamp/internal/msg"
-	"github.com/comptag/bobcat-lamp/internal/types"
+	"github.com/comptag/bobcat-lamp/internal/pipe"
 )
 
-const LiveSms = true
+const LiveSms = false
 
 func main() {
 	twilioCfg := env.LoadEnv()
 
-	cell := types.MakePhoneNumber("9196271828")
-	me := types.MakePatient("daveID", "David Millman", cell)
-	result := lab.MakeResult(me, false)
-
+	// setup the resporer
 	reporter := msg.MakeDummyReporter()
 	if LiveSms {
 		reporter = msg.MakeSmsReporter(
@@ -30,10 +26,23 @@ func main() {
 		)
 	}
 
-	r, err := reporter.Report(result)
+	// load results
+	results, err := pipe.LoadFile(
+		"./testdata/patients.csv",
+		"./testdata/results.csv",
+	)
 	if err != nil {
 		fmt.Println("Error", err)
-	} else {
-		fmt.Println("Success", r)
+	}
+
+	// send a report
+	for _, result := range results {
+		r, err := reporter.Report(result)
+
+		if err != nil {
+			fmt.Println("Error", err)
+		} else {
+			fmt.Println("Success", r)
+		}
 	}
 }
