@@ -142,13 +142,13 @@ func Load(patientsIn, resultsIn io.Reader) ([]*lab.Result, error) {
 func LoadFile(patientsFileName, resultsFileName string) ([]*lab.Result, error) {
 	patientsFile, err := os.Open(patientsFileName)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer patientsFile.Close()
 
 	resultsFile, err := os.Open(resultsFileName)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer resultsFile.Close()
 
