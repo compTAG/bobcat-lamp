@@ -1,22 +1,33 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"time"
 
+	"github.com/labstack/gommon/log"
+
 	"github.com/comptag/bobcat-lamp/internal/env"
+	"github.com/comptag/bobcat-lamp/internal/lab"
 	"github.com/comptag/bobcat-lamp/internal/msg"
 	"github.com/comptag/bobcat-lamp/internal/pipe"
 )
 
-const LiveSms = false
+const LiveSms = true
 
-func main() {
+func getFilenames() (string, string) {
+	patientFile := flag.String("p", "./testdata/patients.csv", "patients file name")
+	resultsFile := flag.String("r", "./testdata/results.csv", "results file name")
+	flag.Parse()
+
+	return *patientFile, *resultsFile
+
+}
+
+func initReporter(useLiveSMS bool) msg.Reporter {
 	twilioCfg := env.LoadEnv()
 
-	// setup the resporer
 	reporter := msg.MakeDummyReporter()
-	if LiveSms {
+	if useLiveSMS {
 		reporter = msg.MakeSmsReporter(
 			twilioCfg.AccountSid,
 			twilioCfg.AuthToken,
@@ -26,23 +37,41 @@ func main() {
 		)
 	}
 
-	// load results
-	results, err := pipe.LoadFile(
-		"./testdata/patients.csv",
-		"./testdata/results.csv",
-	)
-	if err != nil {
-		fmt.Println("Error", err)
-	}
+	return reporter
+}
 
-	// send a report
-	for _, result := range results {
+func sendReport(reporter msg.Reporter, results []*lab.Result) ([]string, error) {
+	sids := make([]string, len(results))
+	for i, result := range results {
 		r, err := reporter.Report(result)
 
 		if err != nil {
-			fmt.Println("Error", err)
-		} else {
-			fmt.Println("Success", r)
+			return sids, err
 		}
+
+		sids[i] = r
 	}
+	return sids, nil
+}
+
+func main() {
+	// init variables
+	reporter := initReporter(LiveSms)
+	patientsFileName, resultsFileName := getFilenames()
+
+	// load results
+	results, err := pipe.LoadFile(patientsFileName, resultsFileName)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	// send a report
+	sids, err := sendReport(reporter, results)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	log.Printf("Success %v", sids)
 }
